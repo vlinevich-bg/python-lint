@@ -29,6 +29,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3-distutils \
     python3-setuptools
 
+# Ubuntu 18.04 ships very old packaging tools; upgrade them before resolving
+# current lint dependencies.
+RUN ${PYTHON_VERSION} -m pip install --no-cache-dir --upgrade \
+    "pip<24.1" \
+    "setuptools>=68,<70" \
+    wheel
+
 # Clean up apt-get
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
